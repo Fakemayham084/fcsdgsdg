@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Public IP Address</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #ip {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Your Public IP Address</h1>
+    <div id="ip">Fetching your IP address...</div>
+
+    <script>
+        fetch('https://api.ipify.org?format=json')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('ip').textContent = data.ip;
+        })
+        .catch(error => {
+            document.getElementById('ip').textContent = 'Unable to fetch IP address';
+        });
+    </script>
+</body>
+</html>
